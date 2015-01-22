@@ -58,7 +58,7 @@ Some things I do not like about the above suggestion:
    be neccesary to allow overriding certain metadata.  For example 'pdfjs-dist' specifically
    is a compiled build of pdf.js, generated regularly by a bot.  The real source code for
    pdf.js lives in a separate git repository not mentioned in the package manifest, so
-   being able to override the source key is a good thing.
+   being able to override the "c_and_cs" attribute is a good thing.
 
 3. Some metadata is missing. Most free software licenses require attribution,
    which means the application should really have some kind of legal notices page
@@ -69,8 +69,8 @@ Some things I do not like about the above suggestion:
    strings for each dependency available in a machine readable fashion.  If you
    leverage existing package repositories like npm, bower, pypi, etc.., this
    information is often available directly from the package registry, or in a
-   standard format which is specific to the registry.
-
+   standard format which is specific to the registry (like the package.json
+   files include in every npm package).
 
 
 The code (dl.py) in this branch is a little experiment of how using a plain
