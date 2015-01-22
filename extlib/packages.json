@@ -1,0 +1,18 @@
+{
+    "lato": {
+        "registry": "Google Fonts",
+        "package": "ofl/lato",
+        "c_and_cs": "hg clone https://code.google.com/p/googlefontdirectory/"
+    },
+    "pdf.js": {
+        "registry": "npm",
+        "package": "pdfjs-dist",
+        "c_and_cs": "git clone https://github.com/mozilla/pdf.js",
+        "version": "1.0.1086"
+    },
+    "video-js": {
+        "registry": "npm",
+        "package": "video.js",
+        "version": "4.2.1"
+    }
+}

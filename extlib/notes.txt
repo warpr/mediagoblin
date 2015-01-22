@@ -1,0 +1,77 @@
+This is related to https://issues.mediagoblin.org/ticket/1095 .
+
+That ticket proposes a file to store a set of metadata or instructions which can be used to
+automatically download and unpack all external dependencies required by MediaGoblin, the
+suggested file format is illustrated by the following example:
+
+EXTLIBS = [
+    Extlib(
+        "lato",
+        verify=check_md5("ab516ef108"),
+        install=fetch_and_unpack(
+            "http://example.org/lato-1.7.tar.gz",
+            move_from="lato-1.7"),
+        # complete and corresponding source
+        c_and_cs=fetch_and_unpack("http://example.org/lato-source.git")
+    ),
+    Extlib(
+        "pdf.js",
+        verify=check_md5("adc95ed383ec00cf4342bf4dd343e9bb"),
+        install=fetch_and_unpack(
+            "http://example.org/pdf.js-8.7.tar.gz",
+            move_from="pdfjs-8.7"),
+        # complete and corresponding source
+        c_and_cs=print_instructions("git clone git://gitpit.example/pdfjs/")
+    )
+]
+
+Some things I like about the above suggestion:
+
+1. For security, including a verification hash of the specified version is
+   useful.
+
+2. The complete and corresponding source code is linked to seperately from
+   a binary package.
+
+3. Supports more or less anything (not just e.g. javascript libraries)
+
+
+Some things I do not like about the above suggestion:
+
+1. It seems to be a python script which you need to run to obtain information about the
+   required packages.  I think this file should be a normal text file in a standard format
+   (json, yaml, ini, xml, whatever), so that other tools can interact with it if that turns
+   out to be useful.
+
+   This may not seem immediately valuable, but considering a big part of this exercise is to
+   try and obtain javascript dependencies without running javascript -- that in should be
+   indication enough that there is value in storing package metadata in a language agnostic
+   format.
+
+2. For each library it seems neccesary to encode a bunch of directives to process the
+   download.  If you get a lot of deps from npm, it seems better to just have support
+   for npm so you can write something like:
+
+       Extlib("video-js", npm("videos.js", "4.2.1"))
+
+   All the other information can then be obtained from the npm repository.  Though it may
+   be neccesary to allow overriding certain metadata.  For example 'pdfjs-dist' specifically
+   is a compiled build of pdf.js, generated regularly by a bot.  The real source code for
+   pdf.js lives in a separate git repository not mentioned in the package manifest, so
+   being able to override the source key is a good thing.
+
+3. Some metadata is missing. Most free software licenses require attribution,
+   which means the application should really have some kind of legal notices page
+   which lists all the copyright notices and licenses of the components imported
+   into the application.
+
+   This is easier to do automatically if you have the license and attribution
+   strings for each dependency available in a machine readable fashion.  If you
+   leverage existing package repositories like npm, bower, pypi, etc.., this
+   information is often available directly from the package registry, or in a
+   standard format which is specific to the registry.
+
+
+
+The code (dl.py) in this branch is a little experiment of how using a plain
+.json file to specify dependencies could work.
