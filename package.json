@@ -1,0 +1,8 @@
+{
+  "name": "mediagoblin",
+  "dependencies": {
+    "bower": "^1.3.12"
+  },
+  "devDependencies": {},
+    "node-version": "^0.10"
+}

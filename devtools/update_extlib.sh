@@ -33,7 +33,7 @@ elif [ -f ./node_modules/.bin/bower ]; then
     BOWER="./node_modules/.bin/bower";
 else
     echo "Bower not found, installing via npm!";
-    npm install bower;
+    npm install;
     BOWER="./node_modules/.bin/bower";
 fi
 
